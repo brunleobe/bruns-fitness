@@ -2,15 +2,17 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const navLinks = [
   { label: 'Classes', href: '/classes' },
-  { label: 'Trainers', href: '/#trainers' },
-  { label: 'Pricing', href: '/#pricing' },
+  { label: 'Trainers', href: '/trainers' },
+  { label: 'Pricing', href: '/pricing' },
 ]
 const roles = ['Guest', 'Member', 'Trainer']
 
 export default function Navbar() {
+  const pathname = usePathname()
   const [activeRole, setActiveRole] = useState('Guest')
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -30,7 +32,10 @@ export default function Navbar() {
             <Link
               key={link.label}
               href={link.href}
-              className="text-gray-400 hover:text-white text-xs font-semibold tracking-[0.15em] uppercase transition-colors duration-200"
+              className={`text-xs tracking-[0.15em] uppercase transition-colors duration-200 ${pathname === link.href
+                  ? 'text-white font-black'
+                  : 'text-gray-400 font-semibold hover:text-white'
+                }`}
             >
               {link.label}
             </Link>
@@ -46,11 +51,10 @@ export default function Navbar() {
                 key={role}
                 id={`role-${role.toLowerCase()}`}
                 onClick={() => setActiveRole(role)}
-                className={`px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase transition-all duration-200 cursor-pointer ${
-                  activeRole === role
-                    ? 'bg-red-600 text-white'
-                    : 'text-gray-400 hover:text-white bg-transparent'
-                }`}
+                className={`px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase transition-all duration-200 cursor-pointer ${activeRole === role
+                  ? 'bg-red-600 text-white'
+                  : 'text-gray-400 hover:text-white bg-transparent'
+                  }`}
               >
                 {role}
               </button>
@@ -88,7 +92,10 @@ export default function Navbar() {
               key={link.label}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className="text-gray-400 hover:text-white text-xs font-semibold tracking-[0.15em] uppercase transition-colors"
+              className={`text-xs tracking-[0.15em] uppercase transition-colors ${pathname === link.href
+                  ? 'text-white font-black'
+                  : 'text-gray-400 font-semibold hover:text-white'
+                }`}
             >
               {link.label}
             </Link>
