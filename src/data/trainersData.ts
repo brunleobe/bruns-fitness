@@ -12,6 +12,7 @@ export interface Trainer {
   certifications: string[]
   image: string
   classes: string[]
+  sessionRate: number   // 1-on-1 price in $/hr
 }
 
 // ─────────────────────────────────────────────
@@ -29,6 +30,7 @@ export const ALL_TRAINERS: Trainer[] = [
     certifications: ['NASM-CPT', 'Boxing Coach L3'],
     image: '/trainers/marcus.jpg',
     classes: ['HIIT COMBAT', 'POWERLIFTING'],
+    sessionRate: 85,
   },
   {
     id: 'trainer-sofia-reyes',
@@ -40,6 +42,7 @@ export const ALL_TRAINERS: Trainer[] = [
     certifications: ['CSCS', 'FMS Specialist'],
     image: '/trainers/sofia.jpg',
     classes: ['STRENGTH LAB'],
+    sessionRate: 85,
   },
   {
     id: 'trainer-aisha-nkosi',
@@ -51,6 +54,7 @@ export const ALL_TRAINERS: Trainer[] = [
     certifications: ['RYT-500', 'Yin Yoga'],
     image: '/trainers/aisha.jpg',
     classes: ['YOGA FLOW', 'PILATES CORE'],
+    sessionRate: 85,
   },
   {
     id: 'trainer-jordan-kim',
@@ -62,5 +66,6 @@ export const ALL_TRAINERS: Trainer[] = [
     certifications: ['RRCA Coach', 'NASM-CPT'],
     image: '/trainers/jordan.jpg',
     classes: ['MORNING RUN'],
+    sessionRate: 85,
   },
 ]

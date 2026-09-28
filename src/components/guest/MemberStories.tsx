@@ -29,7 +29,7 @@ export default function MemberStories() {
         {/* Section Header */}
         <div className="flex items-center gap-3 mb-12 sm:mb-16">
           <span className="w-6 h-px bg-red-600 inline-block" />
-          <span className="text-red-600 text-xs font-bold tracking-[0.25em] uppercase">
+          <span className="text-red-600 text-xs font-mono font-bold tracking-[0.25em] uppercase">
             MEMBER STORIES
           </span>
         </div>

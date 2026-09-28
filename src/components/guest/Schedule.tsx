@@ -45,7 +45,7 @@ export default function Schedule() {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <span className="w-6 h-px bg-red-600 inline-block" />
-              <span className="text-red-600 text-xs font-bold tracking-[0.25em] uppercase">
+              <span className="text-red-600 text-xs font-mono font-bold tracking-[0.25em] uppercase">
                 THIS WEEK
               </span>
             </div>
@@ -58,7 +58,7 @@ export default function Schedule() {
             <Link
               id="full-schedule-btn"
               href="/classes"
-              className="inline-flex items-center gap-2 border border-white/20 hover:border-white text-white text-xs font-bold tracking-[0.2em] uppercase px-6 py-3.5 transition-all duration-200 hover:bg-white/5"
+              className="inline-flex items-center gap-2 border border-white/20 hover:border-white text-white text-xs font-mono font-bold tracking-[0.2em] uppercase px-6 py-3.5 transition-all duration-200 hover:bg-white/5"
             >
               <span>FULL SCHEDULE</span>
               <span className="text-sm">→</span>
@@ -91,7 +91,7 @@ export default function Schedule() {
                     {cls.level}
                   </span>
                   <span
-                    className={`text-[11px] font-bold tracking-wide px-2.5 py-1 bg-black/70 backdrop-blur-xs rounded-xs ${
+                    className={`font-mono text-[11px] font-bold tracking-wide px-2.5 py-1 bg-black/70 backdrop-blur-xs rounded-xs ${
                       cls.spotsHighlight ? 'text-red-400' : 'text-gray-400'
                     }`}
                   >
@@ -125,7 +125,7 @@ export default function Schedule() {
                   <a
                     id={`join-${cls.id}`}
                     href="#join"
-                    className="bg-red-600 hover:bg-red-700 text-white text-xs font-black tracking-widest uppercase px-5 py-2.5 transition-all duration-200 hover:scale-[1.03] active:scale-100"
+                    className="bg-red-600 hover:bg-red-700 text-white text-xs font-display font-black tracking-widest uppercase px-5 py-2.5 transition-all duration-200 hover:scale-[1.03] active:scale-100"
                   >
                     JOIN
                   </a>
@@ -140,7 +140,7 @@ export default function Schedule() {
           <Link
             id="view-all-classes-btn"
             href="/classes"
-            className="inline-flex items-center gap-2 border border-white/20 hover:border-white text-white text-xs font-black tracking-[0.2em] uppercase px-8 py-4 transition-all duration-200 hover:bg-white/5"
+            className="inline-flex items-center gap-2 border border-white/20 hover:border-white text-white text-xs font-display font-black tracking-[0.2em] uppercase px-8 py-4 transition-all duration-200 hover:bg-white/5"
           >
             <span>VIEW ALL CLASSES</span>
             <span className="text-sm">→</span>

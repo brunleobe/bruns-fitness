@@ -51,7 +51,7 @@ function TrainerCard({
           {trainer.certifications.map((cert) => (
             <span
               key={cert}
-              className="bg-white/5 border border-white/10 text-gray-400 text-[10px] font-bold tracking-wider px-2.5 py-1 uppercase"
+              className="bg-white/5 border border-white/10 text-gray-400 font-mono text-[10px] font-bold tracking-wider px-2.5 py-1 uppercase"
             >
               {cert}
             </span>
@@ -66,12 +66,67 @@ function TrainerCard({
 // Detail panel
 // ─────────────────────────────────────────────
 
-function TrainerDetail({ trainer }: { trainer: Trainer }) {
+function BookSessionBox({
+  trainer,
+  requested,
+  onRequest,
+}: {
+  trainer: Trainer
+  requested: boolean
+  onRequest: () => void
+}) {
+  const firstName = trainer.name.split(' ')[0]
+  return (
+    <div className="border border-white/8 bg-white/[0.02] p-6 self-start">
+      <p className="text-red-500 text-[10px] font-mono font-black tracking-[0.2em] uppercase mb-3">
+        Book a Session
+      </p>
+      <div className="flex items-end gap-1 mb-3">
+        <span className="font-display text-4xl font-black text-white leading-none">${trainer.sessionRate}</span>
+        <span className="text-gray-500 text-sm mb-0.5">/hr</span>
+      </div>
+      <p className="text-gray-400 text-xs leading-relaxed mb-6">
+        One-on-one with {firstName}. Custom programming, real-time coaching, and full
+        accountability.
+      </p>
+      {requested ? (
+        <div className="w-full py-3.5 text-center text-xs font-display font-black tracking-[0.2em] uppercase border border-green-500/40 bg-green-500/5 text-green-500">
+          ✓ Request Sent
+        </div>
+      ) : (
+        <button
+          onClick={onRequest}
+          className="w-full py-3.5 text-xs font-display font-black tracking-[0.2em] uppercase bg-red-600 hover:bg-red-700 text-white transition-colors duration-200 cursor-pointer"
+        >
+          Request a Session
+        </button>
+      )}
+    </div>
+  )
+}
+
+function MembersOnlyBox() {
+  return (
+    <div className="border border-white/8 bg-white/[0.02] p-6 self-start">
+      <p className="text-gray-500 text-[10px] font-mono font-black tracking-[0.2em] uppercase mb-3">
+        Members Only
+      </p>
+      <p className="text-gray-300 text-xs leading-relaxed mb-3">
+        Join Apex to book 1-on-1 sessions with our certified coaches — from <span className="text-white font-semibold">$85/hr.</span>
+      </p>
+      <p className="text-gray-600 text-[10px] uppercase tracking-wider">
+        Included in PERFORM &amp; BLACK plans
+      </p>
+    </div>
+  )
+}
+
+function TrainerDetail({ trainer, children }: { trainer: Trainer; children: React.ReactNode }) {
   return (
     <div className="mt-4 border border-white/10 bg-[#0a0a0a] p-8 sm:p-10 grid grid-cols-1 md:grid-cols-3 gap-8 animate-[fadeIn_0.25s_ease]">
       {/* Left — main info */}
       <div className="md:col-span-2">
-        <p className="text-red-500 text-[10px] font-black tracking-[0.25em] uppercase mb-3">
+        <p className="text-red-500 text-[10px] font-mono font-black tracking-[0.25em] uppercase mb-3">
           Trainer Profile
         </p>
         <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight mb-1">
@@ -82,18 +137,8 @@ function TrainerDetail({ trainer }: { trainer: Trainer }) {
         <p className="text-gray-300 text-sm leading-relaxed">{trainer.bio}</p>
       </div>
 
-      {/* Right — members only box */}
-      <div className="border border-white/8 bg-white/[0.02] p-6 self-start">
-        <p className="text-gray-500 text-[10px] font-black tracking-[0.2em] uppercase mb-3">
-          Members Only
-        </p>
-        <p className="text-gray-300 text-xs leading-relaxed mb-3">
-          Join Apex to book 1-on-1 sessions with our certified coaches — from <span className="text-white font-semibold">$85/hr.</span>
-        </p>
-        <p className="text-gray-600 text-[10px] uppercase tracking-wider">
-          Included in PERFORM &amp; BLACK plans
-        </p>
-      </div>
+      {/* Right — booking / members-only box */}
+      {children}
     </div>
   )
 }
@@ -102,7 +147,13 @@ function TrainerDetail({ trainer }: { trainer: Trainer }) {
 // Main section
 // ─────────────────────────────────────────────
 
-export default function TrainersSection() {
+interface TrainersSectionProps {
+  /** Member view: trainer ids already requested. Omit for the guest view. */
+  requestedIds?: string[]
+  onRequestSession?: (trainerId: string) => void
+}
+
+export default function TrainersSection({ requestedIds, onRequestSession }: TrainersSectionProps = {}) {
   const [selectedId, setSelectedId] = useState<string | null>(ALL_TRAINERS[0].id)
 
   const selectedTrainer = ALL_TRAINERS.find((t) => t.id === selectedId) ?? null
@@ -118,7 +169,7 @@ export default function TrainersSection() {
         <div className="mb-12 max-w-xl">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-6 h-px bg-red-600 inline-block" />
-            <span className="text-red-500 text-xs font-bold tracking-[0.25em] uppercase">
+            <span className="text-red-500 text-xs font-mono font-bold tracking-[0.25em] uppercase">
               Our Team
             </span>
           </div>
@@ -147,7 +198,19 @@ export default function TrainersSection() {
         </div>
 
         {/* Detail panel */}
-        {selectedTrainer && <TrainerDetail trainer={selectedTrainer} />}
+        {selectedTrainer && (
+          <TrainerDetail trainer={selectedTrainer}>
+            {requestedIds ? (
+              <BookSessionBox
+                trainer={selectedTrainer}
+                requested={requestedIds.includes(selectedTrainer.id)}
+                onRequest={() => onRequestSession?.(selectedTrainer.id)}
+              />
+            ) : (
+              <MembersOnlyBox />
+            )}
+          </TrainerDetail>
+        )}
       </div>
 
       <style>{`

@@ -1,16 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import PlanModal from './PlanModal'
+import PlanModal from '@/components/pricing/PlanModal'
+import { SITE_STATS as stats } from '@/data/siteStatsData'
 
 export default function ApexMethod() {
   const [modalOpen, setModalOpen] = useState(false)
-  const stats = [
-    { value: '2,400+', label: 'MEMBERS' },
-    { value: '18', label: 'EXPERT COACHES' },
-    { value: '34', label: 'CLASSES / WEEK' },
-    { value: '24 / 7', label: 'ACCESS' },
-  ]
 
   const features = [
     {
@@ -115,10 +110,10 @@ export default function ApexMethod() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-14 w-full lg:w-auto">
             {stats.map((stat, i) => (
               <div key={i} className="text-left">
-                <div className="text-3xl sm:text-4xl font-black text-red-600 tracking-tight leading-none mb-2">
+                <div className="font-display text-3xl sm:text-4xl font-black text-red-600 tracking-tight leading-none mb-2">
                   {stat.value}
                 </div>
-                <div className="text-[11px] font-bold text-gray-400 tracking-[0.2em] uppercase">
+                <div className="text-[11px] font-mono font-bold text-gray-400 tracking-[0.2em] uppercase">
                   {stat.label}
                 </div>
               </div>
@@ -133,7 +128,7 @@ export default function ApexMethod() {
             {/* Tagline */}
             <div className="flex items-center gap-3">
               <span className="w-6 h-px bg-red-600 inline-block" />
-              <span className="text-red-600 text-xs font-bold tracking-[0.25em] uppercase">
+              <span className="text-red-600 text-xs font-mono font-bold tracking-[0.25em] uppercase">
                 THE APEX METHOD
               </span>
             </div>
@@ -164,7 +159,7 @@ export default function ApexMethod() {
               <button
                 id="apex-method-join-btn"
                 onClick={() => setModalOpen(true)}
-                className="inline-block bg-red-600 hover:bg-red-700 text-white text-xs font-black tracking-[0.2em] uppercase px-8 py-4 transition-all duration-200 hover:scale-[1.02] active:scale-100 cursor-pointer"
+                className="inline-block bg-red-600 hover:bg-red-700 text-white text-xs font-display font-black tracking-[0.2em] uppercase px-8 py-4 transition-all duration-200 hover:scale-[1.02] active:scale-100 cursor-pointer"
               >
                 JOIN FOR $29/MO
               </button>

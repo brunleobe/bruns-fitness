@@ -18,14 +18,14 @@ function PlanCard({ plan, onBook }: { plan: PricingPlan; onBook: () => void }) {
     >
       {/* Most popular banner */}
       {plan.isPopular && (
-        <div className="bg-red-600 text-white text-[10px] font-black tracking-[0.25em] uppercase text-center py-2">
+        <div className="bg-red-600 text-white text-[10px] font-display font-black tracking-[0.25em] uppercase text-center py-2">
           Most Popular
         </div>
       )}
 
       <div className="p-7 sm:p-8 flex flex-col flex-1">
         {/* Tag */}
-        <p className={`text-[10px] font-black tracking-[0.2em] uppercase mb-2 ${plan.isPopular ? 'text-red-500' : 'text-gray-500'}`}>
+        <p className={`text-[10px] font-mono font-black tracking-[0.2em] uppercase mb-2 ${plan.isPopular ? 'text-red-500' : 'text-gray-500'}`}>
           {plan.tag}
         </p>
 
@@ -36,7 +36,7 @@ function PlanCard({ plan, onBook }: { plan: PricingPlan; onBook: () => void }) {
 
         {/* Price */}
         <div className="flex items-end gap-1 mb-3">
-          <span className="text-4xl sm:text-5xl font-black text-white leading-none">
+          <span className="font-display text-4xl sm:text-5xl font-black text-white leading-none">
             ${plan.price}
           </span>
           <span className="text-gray-500 text-sm mb-1">/mo</span>
@@ -58,7 +58,7 @@ function PlanCard({ plan, onBook }: { plan: PricingPlan; onBook: () => void }) {
         {/* CTA */}
         <button
           onClick={onBook}
-          className={`w-full py-3.5 text-xs font-black tracking-[0.2em] uppercase transition-all duration-200 cursor-pointer ${
+          className={`w-full py-3.5 text-xs font-display font-black tracking-[0.2em] uppercase transition-all duration-200 cursor-pointer ${
             plan.isPopular
               ? 'bg-red-600 hover:bg-red-700 text-white'
               : 'border border-white/30 hover:border-white text-white hover:bg-white/5'
@@ -87,7 +87,7 @@ export default function PricingSection({ onBook }: PricingSectionProps) {
         <div className="mb-14 max-w-xl">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-6 h-px bg-red-600 inline-block" />
-            <span className="text-red-500 text-xs font-bold tracking-[0.25em] uppercase">
+            <span className="text-red-500 text-xs font-mono font-bold tracking-[0.25em] uppercase">
               Membership
             </span>
           </div>
@@ -111,7 +111,7 @@ export default function PricingSection({ onBook }: PricingSectionProps) {
         <div className="mt-8 border border-white/10 bg-[#0a0a0a] p-8 sm:p-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           {/* Left */}
           <div>
-            <p className="text-red-500 text-[10px] font-black tracking-[0.25em] uppercase mb-3">
+            <p className="text-red-500 text-[10px] font-mono font-black tracking-[0.25em] uppercase mb-3">
               Our Guarantee
             </p>
             <h2 className="text-2xl sm:text-3xl font-black text-white leading-tight mb-4">
@@ -144,7 +144,7 @@ export default function PricingSection({ onBook }: PricingSectionProps) {
         <div className="mt-20">
           <div className="flex items-center gap-2 mb-6">
             <span className="w-6 h-px bg-red-600 inline-block" />
-            <span className="text-red-500 text-xs font-bold tracking-[0.25em] uppercase">FAQ</span>
+            <span className="text-red-500 text-xs font-mono font-bold tracking-[0.25em] uppercase">FAQ</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-white mb-8">Common questions</h2>
 

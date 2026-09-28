@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import PlanModal from './PlanModal'
+import PlanModal from '@/components/pricing/PlanModal'
 
 export default function Hero() {
   const [modalOpen, setModalOpen] = useState(false)
@@ -32,7 +32,7 @@ export default function Hero() {
             {/* Location tag */}
             <div className="flex items-center gap-3 mb-8">
               <div className="w-8 h-px bg-red-600" />
-              <p className="text-red-500 text-[10px] font-bold tracking-[0.25em] uppercase">
+              <p className="text-red-500 text-[10px] font-mono font-bold tracking-[0.25em] uppercase">
                 Lagos, Nigeria &nbsp;·&nbsp; Est. 2020
               </p>
             </div>
@@ -55,14 +55,14 @@ export default function Hero() {
               <button
                 id="hero-start-training-btn"
                 onClick={() => setModalOpen(true)}
-                className="bg-red-600 hover:bg-red-700 text-white text-xs font-black tracking-[0.2em] uppercase px-8 py-4 transition-all duration-200 hover:scale-[1.02] active:scale-100 cursor-pointer"
+                className="bg-red-600 hover:bg-red-700 text-white text-xs font-display font-black tracking-[0.2em] uppercase px-8 py-4 transition-all duration-200 hover:scale-[1.02] active:scale-100 cursor-pointer"
               >
                 Start Training
               </button>
               <Link
                 id="hero-view-classes-btn"
                 href="/classes"
-                className="border border-white/40 hover:border-white text-white text-xs font-black tracking-[0.2em] uppercase px-8 py-4 transition-all duration-200 hover:bg-white/5 inline-flex items-center justify-center"
+                className="border border-white/40 hover:border-white text-white text-xs font-display font-black tracking-[0.2em] uppercase px-8 py-4 transition-all duration-200 hover:bg-white/5 inline-flex items-center justify-center"
               >
                 View Classes
               </Link>

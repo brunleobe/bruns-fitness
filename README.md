@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bruns Fitness
 
-## Getting Started
+Marketing site and member/trainer portal for a gym, built with Next.js 16 (App Router), React 19 and Tailwind CSS 4.
 
-First, run the development server:
+> Next.js 16 has breaking changes from older versions. Check `node_modules/next/dist/docs/` before using an API you're unsure of (see `AGENTS.md`).
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm run build   # type-check + production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Roles (demo)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+There is no real login yet. The **Guest / Member / Trainer** switcher in the Navbar stores the role in a cookie (`bf-role`), and pages read it on the server to decide what to render.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Page         | Guest                | Member                         | Trainer                  |
+| ------------ | -------------------- | ------------------------------ | ------------------------ |
+| `/`          | Marketing home       | Hero, week stats, bookings     | Hero, today's sessions   |
+| `/classes`   | JOIN → plan modal    | BOOK → saved to cookie         | "Managing", no filters   |
+| `/trainers`  | "Members only" box   | Request a 1-on-1 session       | Same as guest            |
+| `/pricing`   | Plans                | Plans                          | Redirects to `/`         |
+| `/dashboard` | Redirects to `/`     | My Apex (stats, bookings, billing) | Trainer portal (placeholder) |
 
-## Learn More
+Demo state lives in cookies: `bf-role`, `bf-bookings-v2`, `bf-session-requests-v1`. To wipe everyone's demo data, bump the version suffix in `src/lib/bookings.ts` or `src/lib/sessionRequests.ts`.
 
-To learn more about Next.js, take a look at the following resources:
+## Project structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+├── app/
+│   ├── layout.tsx              Root HTML, fonts, global CSS
+│   └── (site)/                 Every page — shares Navbar + Footer via layout.tsx
+│       ├── page.tsx            Home (switches on role)
+│       ├── classes/            page.tsx + GuestClasses / MemberClasses client wrappers
+│       ├── trainers/           page.tsx + MemberTrainers client wrapper
+│       ├── pricing/            page.tsx + PricingView
+│       └── dashboard/          page.tsx (member + trainer)
+├── components/
+│   ├── layout/                 Navbar, Footer
+│   ├── ui/                     Generic building blocks (RoleHero, StatCards)
+│   ├── guest/                  Guest home sections (Hero, ApexMethod, Schedule, ...)
+│   ├── member/                 Member-only sections
+│   ├── trainer/                Trainer-only sections
+│   ├── classes/                ClassesSection (guest/member/trainer views)
+│   ├── trainers/               TrainersSection
+│   └── pricing/                PricingSection, PlanModal
+├── data/                       Static/mock data (*Data.ts) — swap for an API later
+└── lib/
+    ├── role.ts, bookings.ts,   Pure types + helpers, safe to import anywhere
+    │   sessionRequests.ts
+    └── server/                 Server-only: cookie readers + server actions
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Conventions
 
-## Deploy on Vercel
+- **Pages decide, components render.** A `page.tsx` reads the role/cookies and picks what to show. Components receive data via props and don't read cookies themselves.
+- **Shared page, role variants.** When a page differs slightly per role, pass a `view` prop (see `ClassesSection`) instead of copying the component.
+- **Client wrappers live next to their page** (e.g. `classes/MemberClasses.tsx`). They hold client state like optimistic updates and call server actions.
+- **Anything using `cookies()` or `'use server'` goes in `lib/server/`.** Client components must not import from there, except server actions from `lib/server/actions.ts`.
+- **Guard pages in the page itself** (`redirect()` in `page.tsx`), not in a layout: layouts render in parallel with pages and don't protect them.
+- **Mock data is fictional.** Never put real customer names, emails or other personal data in `src/data/`.
+- Imports use the `@/` alias (`@/components/...`, `@/lib/...`).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Typography
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Three fonts, loaded in `src/app/layout.tsx` and mapped to Tailwind in `globals.css`:
+
+| Class          | Font           | Use for                                                   |
+| -------------- | -------------- | --------------------------------------------------------- |
+| `font-display` | Oswald         | Headings (`h1`–`h3` get it automatically), buttons, nav links, big numbers and prices |
+| `font-sans`    | Inter          | Body text (the default, no class needed)                  |
+| `font-mono`    | JetBrains Mono | Small uppercase labels, dates, times, status badges, tags |
+
+Oswald's heaviest weight is 700, so `font-black` on display text renders as bold.

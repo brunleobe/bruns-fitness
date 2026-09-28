@@ -1,15 +1,12 @@
-'use client'
+import ClassesSection from '@/components/classes/ClassesSection'
+import { getRole } from '@/lib/server/getRole'
+import { getBookings } from '@/lib/server/getBookings'
+import GuestClasses from './GuestClasses'
+import MemberClasses from './MemberClasses'
 
-import { useState } from 'react'
-import ClassesSection from '@/components/ClassesSection'
-import PlanModal from '@/components/PlanModal'
-
-export default function ClassesPage() {
-  const [modalOpen, setModalOpen] = useState(false)
-  return (
-    <>
-      <ClassesSection onBook={() => setModalOpen(true)} />
-      <PlanModal open={modalOpen} onClose={() => setModalOpen(false)} />
-    </>
-  )
+export default async function ClassesPage() {
+  const role = await getRole()
+  if (role === 'Member') return <MemberClasses bookings={await getBookings()} />
+  if (role === 'Trainer') return <ClassesSection view="trainer" />
+  return <GuestClasses />
 }

@@ -28,8 +28,8 @@ export default function Footer() {
           {/* Column 1: Brand & Location */}
           <div className="lg:col-span-4 space-y-6">
             <a href="#" className="inline-flex items-center gap-1.5 focus:outline-hidden">
-              <span className="text-white font-black text-xl tracking-tight uppercase">APEX</span>
-              <span className="text-red-600 font-black text-xl tracking-tight uppercase">GYM</span>
+              <span className="font-display text-white font-black text-xl tracking-tight uppercase">APEX</span>
+              <span className="font-display text-red-600 font-black text-xl tracking-tight uppercase">GYM</span>
             </a>
 
             <div className="text-gray-500 text-xs sm:text-sm leading-relaxed space-y-1">
@@ -49,7 +49,7 @@ export default function Footer() {
 
           {/* Column 2: TRAIN */}
           <div className="lg:col-span-2 space-y-4">
-            <h4 className="text-red-600 text-xs font-bold tracking-[0.25em] uppercase">
+            <h4 className="text-red-600 text-xs font-mono font-bold tracking-[0.25em] uppercase">
               TRAIN
             </h4>
             <ul className="space-y-3">
@@ -68,7 +68,7 @@ export default function Footer() {
 
           {/* Column 3: EXPLORE */}
           <div className="lg:col-span-3 space-y-4">
-            <h4 className="text-red-600 text-xs font-bold tracking-[0.25em] uppercase">
+            <h4 className="text-red-600 text-xs font-mono font-bold tracking-[0.25em] uppercase">
               EXPLORE
             </h4>
             <ul className="space-y-3">
@@ -87,7 +87,7 @@ export default function Footer() {
 
           {/* Column 4: COMPANY */}
           <div className="lg:col-span-3 space-y-4">
-            <h4 className="text-red-600 text-xs font-bold tracking-[0.25em] uppercase">
+            <h4 className="text-red-600 text-xs font-mono font-bold tracking-[0.25em] uppercase">
               COMPANY
             </h4>
             <ul className="space-y-3">

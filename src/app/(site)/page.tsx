@@ -1,21 +1,52 @@
-import Navbar from '@/components/Navbar'
-import Hero from '@/components/Hero'
-import ApexMethod from '@/components/ApexMethod'
-import Schedule from '@/components/Schedule'
-import MemberStories from '@/components/MemberStories'
-import CtaBanner from '@/components/CtaBanner'
-import Footer from '@/components/Footer'
+import Hero from '@/components/guest/Hero'
+import ApexMethod from '@/components/guest/ApexMethod'
+import Schedule from '@/components/guest/Schedule'
+import MemberStories from '@/components/guest/MemberStories'
+import CtaBanner from '@/components/guest/CtaBanner'
+import MemberHero from '@/components/member/MemberHero'
+import WeekAtAGlance from '@/components/member/WeekAtAGlance'
+import UpcomingBookings from '@/components/member/UpcomingBookings'
+import TrainerHero from '@/components/trainer/TrainerHero'
+import TrainerToday from '@/components/trainer/TrainerToday'
+import { getRole } from '@/lib/server/getRole'
+import { getBookings } from '@/lib/server/getBookings'
+import { resolveBookings } from '@/lib/bookings'
 
-export default function Home() {
+async function MemberHome() {
+  const bookings = resolveBookings(await getBookings())
   return (
-    <main className="bg-black min-h-screen">
-      <Navbar />
+    <>
+      <MemberHero bookings={bookings} />
+      <WeekAtAGlance />
+      <UpcomingBookings bookings={bookings} />
+    </>
+  )
+}
+
+function TrainerHome() {
+  return (
+    <>
+      <TrainerHero />
+      <TrainerToday />
+    </>
+  )
+}
+
+function GuestHome() {
+  return (
+    <>
       <Hero />
       <ApexMethod />
       <Schedule />
       <MemberStories />
       <CtaBanner />
-      <Footer />
-    </main>
+    </>
   )
+}
+
+export default async function Home() {
+  const role = await getRole()
+  if (role === 'Member') return <MemberHome />
+  if (role === 'Trainer') return <TrainerHome />
+  return <GuestHome />
 }

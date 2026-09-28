@@ -1,14 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import PricingSection from '@/components/pricing/PricingSection'
+import ClassesSection from '@/components/classes/ClassesSection'
 import PlanModal from '@/components/pricing/PlanModal'
 
-export default function PricingView() {
+export default function GuestClasses() {
   const [modalOpen, setModalOpen] = useState(false)
   return (
     <>
-      <PricingSection onBook={() => setModalOpen(true)} />
+      <ClassesSection onBook={() => setModalOpen(true)} />
       <PlanModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </>
   )

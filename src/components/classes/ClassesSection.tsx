@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { ALL_CLASSES } from '@/data/classesData'
 import type { FitnessClass } from '@/data/classesData'
+import type { BookingStatus, StoredBooking } from '@/lib/bookings'
 
 // ─────────────────────────────────────────────
 // Types & helpers
@@ -56,7 +57,22 @@ function getDaysAndTrainer(cls: FitnessClass): string {
 // Sub-components
 // ─────────────────────────────────────────────
 
-function ClassCard({ cls, onBook }: { cls: FitnessClass; onBook: () => void }) {
+export type ClassesView = 'guest' | 'member' | 'trainer'
+
+const BOOKED_STYLES: Record<BookingStatus, { label: string; className: string }> = {
+  CONFIRMED: { label: '✓ Booked', className: 'text-green-500 border-green-500/40 bg-green-500/5' },
+  WAITLIST: { label: 'Waitlist', className: 'text-amber-500 border-amber-500/40 bg-amber-500/5' },
+}
+
+interface ClassCardProps {
+  cls: FitnessClass
+  onBook: () => void
+  view: ClassesView
+  status?: BookingStatus // set when the member already booked this class
+}
+
+function ClassCard({ cls, onBook, view, status }: ClassCardProps) {
+  const signedIn = view !== 'guest'
   return (
     <div className="group bg-[#0a0a0a] border border-white/8 hover:border-white/20 transition-all duration-300 overflow-hidden flex flex-col">
       {/* Image area */}
@@ -65,24 +81,36 @@ function ClassCard({ cls, onBook }: { cls: FitnessClass; onBook: () => void }) {
         <img
           src={cls.image}
           alt={cls.title}
-          className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-500 group-hover:scale-105"
+          className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${
+            signedIn
+              ? 'brightness-75 group-hover:brightness-90'
+              : 'grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-90'
+          }`}
         />
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
         {/* Level badge */}
         <span
-          className={`absolute top-3 left-3 ${LEVEL_BADGE[cls.level] ?? 'bg-gray-700 text-white'} text-[10px] font-black tracking-widest px-2.5 py-1 uppercase`}
+          className={`absolute top-3 left-3 font-mono text-[10px] font-bold tracking-widest px-2.5 py-1 uppercase ${
+            signedIn
+              ? 'border border-red-600/60 text-red-500 bg-black/70'
+              : LEVEL_BADGE[cls.level] ?? 'bg-gray-700 text-white'
+          }`}
         >
           {cls.level}
         </span>
 
         {/* Spots */}
         <span
-          className={`absolute top-3 right-3 text-[10px] font-black tracking-wider px-2.5 py-1 uppercase ${
-            cls.spotsHighlight
-              ? 'bg-red-600 text-white'
-              : 'text-gray-300'
+          className={`absolute top-3 right-3 font-mono text-[10px] font-bold tracking-wider px-2.5 py-1 uppercase ${
+            signedIn
+              ? cls.spotsHighlight
+                ? 'border border-red-600/60 text-red-500 bg-black/70'
+                : 'text-gray-400 bg-black/70'
+              : cls.spotsHighlight
+                ? 'bg-red-600 text-white'
+                : 'text-gray-300'
           }`}
         >
           {cls.spots}
@@ -94,7 +122,9 @@ function ClassCard({ cls, onBook }: { cls: FitnessClass; onBook: () => void }) {
         <h3 className="text-base font-black uppercase text-white tracking-tight group-hover:text-red-500 transition-colors mb-1">
           {cls.title}
         </h3>
-        <p className="text-red-500 text-xs italic leading-relaxed">{cls.tagline}</p>
+        <p className={`text-xs leading-relaxed ${signedIn ? 'text-gray-400' : 'text-red-500 italic'}`}>
+          {cls.tagline}
+        </p>
 
         {/* Footer row */}
         <div className="mt-auto pt-4 border-t border-white/8 flex items-center justify-between gap-3">
@@ -102,16 +132,26 @@ function ClassCard({ cls, onBook }: { cls: FitnessClass; onBook: () => void }) {
             <div className="text-white text-sm font-black tracking-wide tabular-nums">
               {getTimeRange(cls)}
             </div>
-            <div className="text-gray-500 text-[10px] mt-0.5 tracking-wide truncate">
+            <div className="font-mono text-gray-500 text-[10px] mt-0.5 tracking-wide truncate">
               {getDaysAndTrainer(cls)}
             </div>
           </div>
-          <button
-            onClick={onBook}
-            className="bg-red-600 hover:bg-red-700 active:scale-95 text-white text-xs font-black tracking-[0.15em] uppercase px-5 py-2.5 shrink-0 transition-all duration-200 cursor-pointer"
-          >
-            JOIN
-          </button>
+          {view === 'trainer' ? (
+            <span className="text-gray-600 text-xs font-mono tracking-wider shrink-0">Managing</span>
+          ) : status ? (
+            <span
+              className={`border text-xs font-display font-black tracking-[0.15em] uppercase px-4 py-2.5 shrink-0 ${BOOKED_STYLES[status].className}`}
+            >
+              {BOOKED_STYLES[status].label}
+            </span>
+          ) : (
+            <button
+              onClick={onBook}
+              className="bg-red-600 hover:bg-red-700 active:scale-95 text-white text-xs font-display font-black tracking-[0.15em] uppercase px-5 py-2.5 shrink-0 transition-all duration-200 cursor-pointer"
+            >
+              {view === 'member' ? 'BOOK' : 'JOIN'}
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -123,10 +163,13 @@ function ClassCard({ cls, onBook }: { cls: FitnessClass; onBook: () => void }) {
 // ─────────────────────────────────────────────
 
 interface ClassesSectionProps {
-  onBook: () => void
+  view?: ClassesView
+  onBook?: (classId: string) => void
+  /** Member view: the member's bookings. */
+  bookings?: StoredBooking[]
 }
 
-export default function ClassesSection({ onBook }: ClassesSectionProps) {
+export default function ClassesSection({ view = 'guest', onBook, bookings }: ClassesSectionProps) {
   const [activeLevel, setActiveLevel] = useState<LevelFilter>('ALL CLASSES')
 
   const filtered =
@@ -142,7 +185,7 @@ export default function ClassesSection({ onBook }: ClassesSectionProps) {
           <div className="max-w-xl">
             <div className="flex items-center gap-2 mb-4">
               <span className="w-6 h-px bg-red-600 inline-block" />
-              <span className="text-red-500 text-xs font-bold tracking-[0.25em] uppercase">
+              <span className="text-red-500 text-xs font-mono font-bold tracking-[0.25em] uppercase">
                 Class Schedule
               </span>
             </div>
@@ -156,36 +199,46 @@ export default function ClassesSection({ onBook }: ClassesSectionProps) {
             </p>
           </div>
 
-          <div className="lg:text-right lg:pt-3 shrink-0">
-            <p className="text-sm">
-              <span className="text-red-500 font-bold">Members book free.</span>{' '}
-              <span className="text-gray-300">Join from $29/mo.</span>
-            </p>
-          </div>
+          {view === 'guest' && (
+            <div className="lg:text-right lg:pt-3 shrink-0">
+              <p className="text-sm">
+                <span className="text-red-500 font-bold">Members book free.</span>{' '}
+                <span className="text-gray-300">Join from $29/mo.</span>
+              </p>
+            </div>
+          )}
         </div>
 
-        {/* ── Level filter tabs ── */}
-        <div className="flex flex-wrap gap-2 mb-10">
-          {LEVEL_FILTERS.map((level) => (
-            <button
-              key={level}
-              onClick={() => setActiveLevel(level)}
-              className={`px-5 py-2 text-xs font-black tracking-widest uppercase transition-all duration-200 cursor-pointer ${
-                activeLevel === level
-                  ? 'bg-red-600 text-white shadow-lg shadow-red-950/40'
-                  : 'border border-white/20 text-gray-400 hover:text-white hover:border-white/40'
-              }`}
-            >
-              {level}
-            </button>
-          ))}
-        </div>
+        {/* ── Level filter tabs (trainers see every class) ── */}
+        {view !== 'trainer' && (
+          <div className="flex flex-wrap gap-2 mb-10">
+            {LEVEL_FILTERS.map((level) => (
+              <button
+                key={level}
+                onClick={() => setActiveLevel(level)}
+                className={`px-5 py-2 text-xs font-mono font-bold tracking-widest uppercase transition-all duration-200 cursor-pointer ${
+                  activeLevel === level
+                    ? 'bg-red-600 text-white shadow-lg shadow-red-950/40'
+                    : 'border border-white/20 text-gray-400 hover:text-white hover:border-white/40'
+                }`}
+              >
+                {level}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* ── Cards grid ── */}
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((cls) => (
-              <ClassCard key={cls.id} cls={cls} onBook={onBook} />
+              <ClassCard
+                key={cls.id}
+                cls={cls}
+                onBook={() => onBook?.(cls.id)}
+                view={view}
+                status={bookings?.find((b) => b.classId === cls.id)?.status}
+              />
             ))}
           </div>
         ) : (

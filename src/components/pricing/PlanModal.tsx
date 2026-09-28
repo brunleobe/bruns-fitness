@@ -135,7 +135,7 @@ export default function PlanModal({ open, onClose }: Props) {
         {/* Header */}
         <div className="flex items-start justify-between px-8 pt-8 pb-6">
           <div>
-            <p className="text-red-600 text-[10px] font-bold tracking-[0.25em] uppercase mb-2">
+            <p className="text-red-600 text-[10px] font-mono font-bold tracking-[0.25em] uppercase mb-2">
               STEP {step} OF 3
             </p>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight uppercase leading-tight">
@@ -176,7 +176,7 @@ export default function PlanModal({ open, onClose }: Props) {
                         {plan.name}
                       </span>
                       {plan.tag && (
-                        <span className="bg-red-600 text-white text-[9px] font-black tracking-widest uppercase px-2 py-0.5">
+                        <span className="bg-red-600 text-white text-[9px] font-mono font-bold tracking-widest uppercase px-2 py-0.5">
                           {plan.tag}
                         </span>
                       )}
@@ -204,7 +204,7 @@ export default function PlanModal({ open, onClose }: Props) {
             <button
               id="modal-step1-continue-btn"
               onClick={() => setStep(2)}
-              className="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-black tracking-[0.2em] uppercase py-4 mt-4 transition-all duration-200 hover:scale-[1.01] active:scale-100"
+              className="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-display font-black tracking-[0.2em] uppercase py-4 mt-4 transition-all duration-200 hover:scale-[1.01] active:scale-100"
             >
               CONTINUE — ${currentPlan.price}/MO
             </button>
@@ -300,7 +300,7 @@ export default function PlanModal({ open, onClose }: Props) {
               <button
                 id="modal-step2-back-btn"
                 onClick={() => setStep(1)}
-                className="flex-1 border border-white/20 hover:border-white/40 text-gray-400 hover:text-white text-xs font-black tracking-[0.2em] uppercase py-4 transition-all duration-200"
+                className="flex-1 border border-white/20 hover:border-white/40 text-gray-400 hover:text-white text-xs font-display font-black tracking-[0.2em] uppercase py-4 transition-all duration-200"
               >
                 BACK
               </button>
@@ -310,7 +310,7 @@ export default function PlanModal({ open, onClose }: Props) {
                   setStep2Attempted(true)
                   if (step2Valid) setStep(3)
                 }}
-                className={`flex-[2] text-xs font-black tracking-[0.2em] uppercase py-4 transition-all duration-300 ${step2Valid
+                className={`flex-[2] text-xs font-display font-black tracking-[0.2em] uppercase py-4 transition-all duration-300 ${step2Valid
                   ? 'bg-red-600 hover:bg-red-700 text-white hover:scale-[1.01] active:scale-100 cursor-pointer'
                   : 'bg-red-950 text-gray-500 cursor-pointer'
                   }`}
@@ -390,14 +390,14 @@ export default function PlanModal({ open, onClose }: Props) {
               <button
                 id="modal-step3-back-btn"
                 onClick={() => setStep(2)}
-                className="flex-1 border border-white/20 hover:border-white/40 text-gray-400 hover:text-white text-xs font-black tracking-[0.2em] uppercase py-4 transition-all duration-200"
+                className="flex-1 border border-white/20 hover:border-white/40 text-gray-400 hover:text-white text-xs font-display font-black tracking-[0.2em] uppercase py-4 transition-all duration-200"
               >
                 BACK
               </button>
               <button
                 id="modal-step3-confirm-btn"
                 onClick={handleSubmit}
-                className="flex-[2] bg-red-600 hover:bg-red-700 text-white text-xs font-black tracking-[0.2em] uppercase py-4 transition-all duration-200 hover:scale-[1.01] active:scale-100"
+                className="flex-[2] bg-red-600 hover:bg-red-700 text-white text-xs font-display font-black tracking-[0.2em] uppercase py-4 transition-all duration-200 hover:scale-[1.01] active:scale-100"
               >
                 CONFIRM — ${currentPlan.price}/MO
               </button>
@@ -422,7 +422,7 @@ export default function PlanModal({ open, onClose }: Props) {
             <button
               id="modal-success-close-btn"
               onClick={handleClose}
-              className="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-black tracking-[0.2em] uppercase py-4 transition-all duration-200"
+              className="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-display font-black tracking-[0.2em] uppercase py-4 transition-all duration-200"
             >
               LET'S GO
             </button>
