@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Bruns Fitness favicon: black "B", red "F" (#dc2626, Tailwind red-600) on white, condensed like the Oswald logo. -->
+  <rect width="32" height="32" rx="6" fill="#ffffff"/>
+  <!-- B -->
+  <path fill="#000000" fill-rule="evenodd" d="M6 5H12Q15 5 15 8.5V12Q15 14.3 13.4 15.2Q15.6 16.1 15.6 19V23Q15.6 27 12 27H6Z M9.3 8.2H11.2Q11.8 8.2 11.8 9V12Q11.8 13.3 11 13.3H9.3Z M9.3 16.8H11.4Q12.3 16.8 12.3 17.8V22.6Q12.3 23.8 11.3 23.8H9.3Z"/>
+  <!-- F -->
+  <path fill="#dc2626" d="M17.5 5H26V8.4H21V14.2H25V17.5H21V27H17.5Z"/>
+</svg>
