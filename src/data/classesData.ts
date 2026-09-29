@@ -15,8 +15,7 @@ export interface FitnessClass {
   duration: string
   trainer: string
   trainerRole: string
-  spots: string
-  spotsHighlight: boolean
+  spotsLeft: number    // open spots before the demo member books; 0 = full (waitlist only)
   schedule: string[]
   description: string
   highlights: string[]
@@ -52,8 +51,7 @@ export const ALL_CLASSES: FitnessClass[] = [
     duration: '60 MIN',
     trainer: 'Marcus Webb',
     trainerRole: 'Head Performance Coach',
-    spots: '4 spots',
-    spotsHighlight: true,
+    spotsLeft: 4,
     schedule: ['MON · 06:00', 'WED · 06:00', 'FRI · 06:00'],
     description:
       'High-octane interval conditioning combined with combat drills. Push past lactate threshold with sprint intervals, battle ropes, and explosive plyometrics designed to torch calories.',
@@ -72,8 +70,7 @@ export const ALL_CLASSES: FitnessClass[] = [
     duration: '90 MIN',
     trainer: 'Sofia Reyes',
     trainerRole: 'Strength & Conditioning Specialist',
-    spots: '8 spots',
-    spotsHighlight: false,
+    spotsLeft: 8,
     schedule: ['TUE · 08:00', 'THU · 08:00'],
     description:
       'Structured progressive overload focusing on compound lifts: squats, deadlifts, bench presses, and accessory hypertrophy work. Coached with strict technique emphasis.',
@@ -92,8 +89,7 @@ export const ALL_CLASSES: FitnessClass[] = [
     duration: '60 MIN',
     trainer: 'Aisha Nkosi',
     trainerRole: 'Mobility & Recovery Director',
-    spots: '12 spots',
-    spotsHighlight: false,
+    spotsLeft: 12,
     schedule: ['DAILY · 12:00'],
     description:
       'Dynamic vinyasa flow paired with deep fascial release and mobility drills. Designed specifically for heavy lifters and athletes seeking injury prevention and nervous system reset.',
@@ -112,8 +108,7 @@ export const ALL_CLASSES: FitnessClass[] = [
     duration: '60 MIN',
     trainer: 'Elena Marsh',
     trainerRole: 'Pilates & Movement Specialist',
-    spots: '6 spots',
-    spotsHighlight: false,
+    spotsLeft: 6,
     schedule: ['MON · 17:30', 'WED · 17:30', 'SAT · 17:30'],
     description:
       'Precision-based Pilates targeting deep stabilisers, pelvic floor, and spinal alignment. Combines reformer-inspired mat work with controlled breathing to build genuine functional strength.',
@@ -132,8 +127,7 @@ export const ALL_CLASSES: FitnessClass[] = [
     duration: '90 MIN',
     trainer: 'Marcus Webb',
     trainerRole: 'Head Performance Coach',
-    spots: '3 spots',
-    spotsHighlight: true,
+    spotsLeft: 0,
     schedule: ['TUE · 19:00', 'FRI · 19:00'],
     description:
       'Dedicated powerlifting programming built around the squat, bench, and deadlift. Periodised blocks, competition-rule technique, and individualised coaching for every lifter.',
@@ -152,8 +146,7 @@ export const ALL_CLASSES: FitnessClass[] = [
     duration: '60 MIN',
     trainer: 'Jordan Kim',
     trainerRole: 'Endurance & Running Coach',
-    spots: '15 spots',
-    spotsHighlight: false,
+    spotsLeft: 15,
     schedule: ['DAILY · 05:30'],
     description:
       'Coach-led outdoor running sessions blending steady-state aerobic work with interval surges. Routes change weekly to keep the mind engaged and the body adapting.',
@@ -182,7 +175,7 @@ export const DAYS_SCHEDULE: DaySchedule[] = [
     sessions: [
       { time: '08:00 - 09:30', class: 'STRENGTH LAB', coach: 'Sofia Reyes', room: 'Iron Bay' },
       { time: '12:00 - 13:00', class: 'YOGA FLOW', coach: 'Aisha Nkosi', room: 'Studio 2' },
-      { time: '18:30 - 19:30', class: 'APEX BOXING', coach: 'Marcus Webb', room: 'Combat Zone' },
+      { time: '18:30 - 19:30', class: 'BRUNS BOXING', coach: 'Marcus Webb', room: 'Combat Zone' },
     ],
   },
   {
@@ -206,7 +199,7 @@ export const DAYS_SCHEDULE: DaySchedule[] = [
     sessions: [
       { time: '07:00 - 08:00', class: 'HIIT COMBAT', coach: 'Marcus Webb', room: 'Arena A' },
       { time: '12:00 - 13:00', class: 'YOGA FLOW', coach: 'Aisha Nkosi', room: 'Studio 2' },
-      { time: '18:30 - 19:30', class: 'APEX BOXING', coach: 'Marcus Webb', room: 'Combat Zone' },
+      { time: '18:30 - 19:30', class: 'BRUNS BOXING', coach: 'Marcus Webb', room: 'Combat Zone' },
     ],
   },
   {
@@ -221,7 +214,7 @@ export const DAYS_SCHEDULE: DaySchedule[] = [
     day: 'SUNDAY',
     sessions: [
       { time: '10:00 - 11:00', class: 'YOGA FLOW', coach: 'Aisha Nkosi', room: 'Studio 2' },
-      { time: '11:00 - 12:00', class: 'APEX BOXING', coach: 'Marcus Webb', room: 'Combat Zone' },
+      { time: '11:00 - 12:00', class: 'BRUNS BOXING', coach: 'Marcus Webb', room: 'Combat Zone' },
     ],
   },
 ]

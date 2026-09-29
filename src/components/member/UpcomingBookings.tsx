@@ -1,4 +1,6 @@
 import Link from 'next/link'
+import SubmitButton from '@/components/ui/SubmitButton'
+import { cancelBooking } from '@/lib/server/actions'
 import type { Booking, BookingStatus } from '@/lib/bookings'
 
 const statusStyles: Record<BookingStatus, string> = {
@@ -15,19 +17,29 @@ export function BookingList({ bookings }: { bookings: Booking[] }) {
       {bookings.map((booking) => (
         <li
           key={booking.id}
-          className="flex items-center justify-between gap-4 border border-white/10 bg-[#0e0e0e] px-6 py-6 hover:border-white/20 transition-colors duration-200"
+          className="flex flex-wrap items-center justify-between gap-4 border border-white/10 bg-[#0e0e0e] px-6 py-6 hover:border-white/20 transition-colors duration-200"
         >
           <div className="min-w-0">
             <p className="text-white text-base font-black uppercase tracking-tight">{booking.title}</p>
             <p className="text-gray-500 text-xs font-mono tracking-wider mt-1">
-              {booking.day} {booking.date} &nbsp;·&nbsp; {booking.time}
+              {booking.dayLabel} {booking.dateLabel} &nbsp;·&nbsp; {booking.time}
             </p>
           </div>
-          <span
-            className={`shrink-0 border px-3 py-1.5 text-[10px] font-mono font-bold tracking-[0.15em] uppercase ${statusStyles[booking.status]}`}
-          >
-            {booking.status}
-          </span>
+          <div className="flex items-center gap-4 shrink-0">
+            <span
+              className={`border px-3 py-1.5 text-[10px] font-mono font-bold tracking-[0.15em] uppercase ${statusStyles[booking.status]}`}
+            >
+              {booking.status}
+            </span>
+            <form action={cancelBooking.bind(null, booking.classId, booking.date, booking.time)}>
+              <SubmitButton
+                pendingLabel="Cancelling…"
+                className="font-mono text-[10px] font-bold tracking-[0.15em] uppercase text-gray-500 hover:text-red-500 underline-offset-4 hover:underline transition-colors cursor-pointer"
+              >
+                {booking.status === 'WAITLIST' ? 'Leave waitlist' : 'Cancel'}
+              </SubmitButton>
+            </form>
+          </div>
         </li>
       ))}
     </ul>

@@ -2,22 +2,45 @@
 
 import { useOptimistic, useTransition } from 'react'
 import ClassesSection from '@/components/classes/ClassesSection'
-import { bookClass } from '@/lib/server/actions'
-import type { StoredBooking } from '@/lib/bookings'
+import { bookSession, cancelBooking } from '@/lib/server/actions'
+import { addBooking, removeBooking, type ClassSession, type StoredBooking } from '@/lib/bookings'
 
-export default function MemberClasses({ bookings }: { bookings: StoredBooking[] }) {
-  const [optimisticBookings, addBooking] = useOptimistic(
-    bookings,
-    (state, classId: string): StoredBooking[] => [...state, { classId, status: 'CONFIRMED' }],
+type BookingChange = { type: 'book' | 'cancel'; session: ClassSession }
+
+interface MemberClassesProps {
+  bookings: StoredBooking[]
+  /** Render time from the server, so server and browser compute the same sessions. */
+  now: number
+}
+
+export default function MemberClasses({ bookings, now }: MemberClassesProps) {
+  // Same rules as the server actions, so the UI updates instantly and agrees with the server.
+  const [optimisticBookings, applyChange] = useOptimistic(bookings, (state, change: BookingChange) =>
+    change.type === 'book' ? addBooking(state, change.session) : removeBooking(state, change.session),
   )
   const [, startTransition] = useTransition()
 
-  function handleBook(classId: string) {
+  function handleBook(session: ClassSession) {
     startTransition(async () => {
-      addBooking(classId)
-      await bookClass(classId)
+      applyChange({ type: 'book', session })
+      await bookSession(session.classId, session.date, session.time)
     })
   }
 
-  return <ClassesSection view="member" onBook={handleBook} bookings={optimisticBookings} />
+  function handleCancel(session: ClassSession) {
+    startTransition(async () => {
+      applyChange({ type: 'cancel', session })
+      await cancelBooking(session.classId, session.date, session.time)
+    })
+  }
+
+  return (
+    <ClassesSection
+      view="member"
+      bookings={optimisticBookings}
+      now={now}
+      onBookSession={handleBook}
+      onCancelSession={handleCancel}
+    />
+  )
 }

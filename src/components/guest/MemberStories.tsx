@@ -3,7 +3,7 @@ export default function MemberStories() {
     {
       id: 'story-priya',
       quote:
-        '“I\'ve been a member of six gyms. Apex is the first one where I actually showed up consistently — because the coaches made me feel like I owed it to myself, not to them.”',
+        '“I\'ve been a member of six gyms. Bruns Fitness is the first one where I actually showed up consistently — because the coaches made me feel like I owed it to myself, not to them.”',
       author: 'Priya S.',
       membership: 'Member since 2023',
     },
@@ -17,7 +17,7 @@ export default function MemberStories() {
     {
       id: 'story-nneka',
       quote:
-        '“The body comp scans alone changed how I think about progress. The number on the scale is the least interesting metric. Apex taught me that.”',
+        '“The body comp scans alone changed how I think about progress. The number on the scale is the least interesting metric. Bruns Fitness taught me that.”',
       author: 'Nneka O.',
       membership: 'Member since 2024',
     },

@@ -19,11 +19,11 @@ export default function CtaBanner() {
         {/* Action Button */}
         <div>
           <a
-            id="cta-join-apex-btn"
+            id="cta-join-bruns-btn"
             href="#join"
             className="inline-block bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-display font-black tracking-[0.2em] uppercase px-10 py-5 transition-all duration-200 hover:scale-[1.02] active:scale-100 shadow-lg shadow-red-600/20"
           >
-            JOIN APEX — FROM $29/MO
+            JOIN BRUNS FITNESS — FROM $29/MO
           </a>
         </div>
       </div>

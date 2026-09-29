@@ -28,7 +28,7 @@ export const PLANS: PricingPlan[] = [
       'Locker & towel service',
       '2 group classes per month',
       'Fitness onboarding session',
-      'Apex member app',
+      'Bruns Fitness member app',
     ],
     isPopular: false,
   },
@@ -53,7 +53,7 @@ export const PLANS: PricingPlan[] = [
     tag: 'No Limits',
     name: 'BLACK',
     price: 129,
-    tagline: 'The full Apex experience, without compromise.',
+    tagline: 'The full Bruns Fitness experience, without compromise.',
     features: [
       '24/7 VIP floor access',
       'Unlimited everything',

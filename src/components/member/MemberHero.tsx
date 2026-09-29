@@ -11,7 +11,7 @@ export default function MemberHero({ bookings }: { bookings: Booking[] }) {
       headline={['KEEP', 'SHOWING', 'UP.']}
       subtitle={
         <>
-          {nextClass && <>Your next class is {nextClass.day} {nextClass.date} at {nextClass.time}. </>}
+          {nextClass && <>Your next class is {nextClass.dayLabel} {nextClass.dateLabel} at {nextClass.time}. </>}
           {streak && <>You&apos;ve trained {streak.value} straight. </>}
           Don&apos;t let up now.
         </>

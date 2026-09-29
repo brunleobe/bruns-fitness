@@ -10,7 +10,7 @@ export default function Footer() {
     { label: 'Our Coaches', href: '#coaches' },
     { label: 'Membership Plans', href: '#pricing' },
     { label: 'Events & Challenges', href: '#events' },
-    { label: 'Apex App', href: '#app' },
+    { label: 'Bruns Fitness App', href: '#app' },
   ]
 
   const companyLinks = [
@@ -28,8 +28,8 @@ export default function Footer() {
           {/* Column 1: Brand & Location */}
           <div className="lg:col-span-4 space-y-6">
             <a href="#" className="inline-flex items-center gap-1.5 focus:outline-hidden">
-              <span className="font-display text-white font-black text-xl tracking-tight uppercase">APEX</span>
-              <span className="font-display text-red-600 font-black text-xl tracking-tight uppercase">GYM</span>
+              <span className="font-display text-white font-black text-xl tracking-tight uppercase">BRUNS</span>
+              <span className="font-display text-red-600 font-black text-xl tracking-tight uppercase">FITNESS</span>
             </a>
 
             <div className="text-gray-500 text-xs sm:text-sm leading-relaxed space-y-1">
@@ -39,10 +39,10 @@ export default function Footer() {
 
             <div>
               <a
-                href="mailto:hello@apexgym.com"
+                href="mailto:hello@brunsfitness.com"
                 className="text-gray-500 hover:text-white text-xs sm:text-sm transition-colors duration-200"
               >
-                hello@apexgym.com
+                hello@brunsfitness.com
               </a>
             </div>
           </div>
@@ -108,7 +108,7 @@ export default function Footer() {
         {/* Bottom Legal & Copyright Bar */}
         <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] sm:text-[11px] font-mono tracking-widest uppercase text-gray-600">
           <div>
-            © 2026 APEX GYM INC. ALL RIGHTS RESERVED.
+            © 2026 BRUNS FITNESS. ALL RIGHTS RESERVED.
           </div>
 
           <div className="flex items-center gap-3">

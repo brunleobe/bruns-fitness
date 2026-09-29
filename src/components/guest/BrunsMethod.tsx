@@ -4,7 +4,7 @@ import { useState } from 'react'
 import PlanModal from '@/components/pricing/PlanModal'
 import { SITE_STATS as stats } from '@/data/siteStatsData'
 
-export default function ApexMethod() {
+export default function BrunsMethod() {
   const [modalOpen, setModalOpen] = useState(false)
 
   const features = [
@@ -77,7 +77,7 @@ export default function ApexMethod() {
     },
     {
       id: 'feature-app',
-      title: 'The Apex app',
+      title: 'The Bruns Fitness app',
       description:
         'Book classes, log lifts, message your coach. Everything in one place.',
       icon: (
@@ -129,7 +129,7 @@ export default function ApexMethod() {
             <div className="flex items-center gap-3">
               <span className="w-6 h-px bg-red-600 inline-block" />
               <span className="text-red-600 text-xs font-mono font-bold tracking-[0.25em] uppercase">
-                THE APEX METHOD
+                THE BRUNS METHOD
               </span>
             </div>
 
@@ -157,7 +157,7 @@ export default function ApexMethod() {
             {/* Action CTA */}
             <div className="pt-2">
               <button
-                id="apex-method-join-btn"
+                id="bruns-method-join-btn"
                 onClick={() => setModalOpen(true)}
                 className="inline-block bg-red-600 hover:bg-red-700 text-white text-xs font-display font-black tracking-[0.2em] uppercase px-8 py-4 transition-all duration-200 hover:scale-[1.02] active:scale-100 cursor-pointer"
               >

@@ -15,3 +15,11 @@ export function parseSessionRequests(raw: string | undefined): string[] {
     return []
   }
 }
+
+export function addSessionRequest(ids: string[], trainerId: string): string[] {
+  return ids.includes(trainerId) ? ids : [...ids, trainerId]
+}
+
+export function removeSessionRequest(ids: string[], trainerId: string): string[] {
+  return ids.filter((id) => id !== trainerId)
+}

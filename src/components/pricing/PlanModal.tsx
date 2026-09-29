@@ -39,7 +39,7 @@ const plans: Plan[] = [
     id: 'black',
     name: 'BLACK',
     price: 129,
-    description: 'The full Apex experience, without compromise.',
+    description: 'The full Bruns Fitness experience, without compromise.',
     features: [
       '24/7 VIP floor access',
       'Unlimited everything',
@@ -414,7 +414,7 @@ export default function PlanModal({ open, onClose }: Props) {
               </svg>
             </div>
             <div className="space-y-2">
-              <h3 className="text-xl font-black uppercase">Welcome to Apex.</h3>
+              <h3 className="text-xl font-black uppercase">Welcome to Bruns Fitness.</h3>
               <p className="text-gray-400 text-sm leading-relaxed">
                 Check your email for your membership confirmation and next steps. See you on the floor.
               </p>

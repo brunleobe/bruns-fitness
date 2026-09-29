@@ -3,7 +3,9 @@
 import { useState } from 'react'
 import { ALL_CLASSES } from '@/data/classesData'
 import type { FitnessClass } from '@/data/classesData'
-import type { BookingStatus, StoredBooking } from '@/lib/bookings'
+import SessionPicker from '@/components/classes/SessionPicker'
+import { LOW_SPOTS_THRESHOLD, spotsLeft, upcomingSessions } from '@/lib/bookings'
+import type { ClassSession, StoredBooking } from '@/lib/bookings'
 
 // ─────────────────────────────────────────────
 // Types & helpers
@@ -59,20 +61,24 @@ function getDaysAndTrainer(cls: FitnessClass): string {
 
 export type ClassesView = 'guest' | 'member' | 'trainer'
 
-const BOOKED_STYLES: Record<BookingStatus, { label: string; className: string }> = {
-  CONFIRMED: { label: '✓ Booked', className: 'text-green-500 border-green-500/40 bg-green-500/5' },
-  WAITLIST: { label: 'Waitlist', className: 'text-amber-500 border-amber-500/40 bg-amber-500/5' },
+/** The member's sessions of one class. */
+interface BookedSummary {
+  confirmed: number
+  waitlisted: number
 }
 
 interface ClassCardProps {
   cls: FitnessClass
   onBook: () => void
   view: ClassesView
-  status?: BookingStatus // set when the member already booked this class
+  booked: BookedSummary
+  spots: number          // open spots in the next session
 }
 
-function ClassCard({ cls, onBook, view, status }: ClassCardProps) {
+function ClassCard({ cls, onBook, view, booked, spots }: ClassCardProps) {
   const signedIn = view !== 'guest'
+  const full = spots === 0
+  const lowSpots = spots <= LOW_SPOTS_THRESHOLD
   return (
     <div className="group bg-[#0a0a0a] border border-white/8 hover:border-white/20 transition-all duration-300 overflow-hidden flex flex-col">
       {/* Image area */}
@@ -105,15 +111,15 @@ function ClassCard({ cls, onBook, view, status }: ClassCardProps) {
         <span
           className={`absolute top-3 right-3 font-mono text-[10px] font-bold tracking-wider px-2.5 py-1 uppercase ${
             signedIn
-              ? cls.spotsHighlight
+              ? lowSpots
                 ? 'border border-red-600/60 text-red-500 bg-black/70'
                 : 'text-gray-400 bg-black/70'
-              : cls.spotsHighlight
+              : lowSpots
                 ? 'bg-red-600 text-white'
                 : 'text-gray-300'
           }`}
         >
-          {cls.spots}
+          {full ? 'Full' : `${spots} ${spots === 1 ? 'spot' : 'spots'}`}
         </span>
       </div>
 
@@ -138,12 +144,28 @@ function ClassCard({ cls, onBook, view, status }: ClassCardProps) {
           </div>
           {view === 'trainer' ? (
             <span className="text-gray-600 text-xs font-mono tracking-wider shrink-0">Managing</span>
-          ) : status ? (
-            <span
-              className={`border text-xs font-display font-black tracking-[0.15em] uppercase px-4 py-2.5 shrink-0 ${BOOKED_STYLES[status].className}`}
+          ) : view === 'member' && booked.confirmed > 0 ? (
+            // Already booked — reopen the picker to add or cancel sessions.
+            <button
+              onClick={onBook}
+              className="border border-green-500/40 bg-green-500/5 hover:bg-green-500/10 text-green-500 text-xs font-display font-black tracking-[0.15em] uppercase px-4 py-2.5 shrink-0 transition-all duration-200 cursor-pointer"
             >
-              {BOOKED_STYLES[status].label}
-            </span>
+              ✓ Booked{booked.confirmed > 1 && ` ×${booked.confirmed}`}
+            </button>
+          ) : view === 'member' && booked.waitlisted > 0 ? (
+            <button
+              onClick={onBook}
+              className="border border-amber-500/40 bg-amber-500/5 hover:bg-amber-500/10 text-amber-500 text-xs font-display font-black tracking-[0.15em] uppercase px-4 py-2.5 shrink-0 transition-all duration-200 cursor-pointer"
+            >
+              Waitlist
+            </button>
+          ) : view === 'member' && full ? (
+            <button
+              onClick={onBook}
+              className="border border-amber-500/50 hover:bg-amber-500/10 active:scale-95 text-amber-500 text-xs font-display font-black tracking-[0.15em] uppercase px-4 py-2.5 shrink-0 transition-all duration-200 cursor-pointer"
+            >
+              JOIN WAITLIST
+            </button>
           ) : (
             <button
               onClick={onBook}
@@ -164,13 +186,41 @@ function ClassCard({ cls, onBook, view, status }: ClassCardProps) {
 
 interface ClassesSectionProps {
   view?: ClassesView
+  /** Guest view: JOIN pressed on a class. */
   onBook?: (classId: string) => void
-  /** Member view: the member's bookings. */
+  /** Member view: the member's bookings, the render time, and session actions. */
   bookings?: StoredBooking[]
+  now?: number
+  onBookSession?: (session: ClassSession) => void
+  onCancelSession?: (session: ClassSession) => void
 }
 
-export default function ClassesSection({ view = 'guest', onBook, bookings }: ClassesSectionProps) {
+export default function ClassesSection({
+  view = 'guest',
+  onBook,
+  bookings = [],
+  now = 0,
+  onBookSession,
+  onCancelSession,
+}: ClassesSectionProps) {
   const [activeLevel, setActiveLevel] = useState<LevelFilter>('ALL CLASSES')
+  const [pickerClassId, setPickerClassId] = useState<string | null>(null)
+  const pickerClass = ALL_CLASSES.find((c) => c.id === pickerClassId)
+
+  /** Member view shows the next session's spots; guests and trainers see the class default. */
+  function spotsFor(cls: FitnessClass): number {
+    if (view !== 'member') return cls.spotsLeft
+    const next = upcomingSessions(cls.id, now)[0]
+    return next ? spotsLeft(next, bookings) : cls.spotsLeft
+  }
+
+  function bookedFor(classId: string): BookedSummary {
+    const mine = bookings.filter((b) => b.classId === classId)
+    return {
+      confirmed: mine.filter((b) => b.status === 'CONFIRMED').length,
+      waitlisted: mine.filter((b) => b.status === 'WAITLIST').length,
+    }
+  }
 
   const filtered =
     activeLevel === 'ALL CLASSES'
@@ -235,9 +285,10 @@ export default function ClassesSection({ view = 'guest', onBook, bookings }: Cla
               <ClassCard
                 key={cls.id}
                 cls={cls}
-                onBook={() => onBook?.(cls.id)}
+                onBook={() => (view === 'member' ? setPickerClassId(cls.id) : onBook?.(cls.id))}
                 view={view}
-                status={bookings?.find((b) => b.classId === cls.id)?.status}
+                booked={bookedFor(cls.id)}
+                spots={spotsFor(cls)}
               />
             ))}
           </div>
@@ -247,6 +298,18 @@ export default function ClassesSection({ view = 'guest', onBook, bookings }: Cla
           </div>
         )}
       </div>
+
+      {/* ── Session picker (member view) ── */}
+      {pickerClass && (
+        <SessionPicker
+          cls={pickerClass}
+          bookings={bookings}
+          now={now}
+          onBook={(session) => onBookSession?.(session)}
+          onCancel={(session) => onCancelSession?.(session)}
+          onClose={() => setPickerClassId(null)}
+        />
+      )}
     </section>
   )
 }

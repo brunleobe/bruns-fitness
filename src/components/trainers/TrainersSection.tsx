@@ -70,10 +70,12 @@ function BookSessionBox({
   trainer,
   requested,
   onRequest,
+  onCancel,
 }: {
   trainer: Trainer
   requested: boolean
   onRequest: () => void
+  onCancel: () => void
 }) {
   const firstName = trainer.name.split(' ')[0]
   return (
@@ -90,9 +92,17 @@ function BookSessionBox({
         accountability.
       </p>
       {requested ? (
-        <div className="w-full py-3.5 text-center text-xs font-display font-black tracking-[0.2em] uppercase border border-green-500/40 bg-green-500/5 text-green-500">
-          ✓ Request Sent
-        </div>
+        <>
+          <div className="w-full py-3.5 text-center text-xs font-display font-black tracking-[0.2em] uppercase border border-green-500/40 bg-green-500/5 text-green-500">
+            ✓ Request Sent
+          </div>
+          <button
+            onClick={onCancel}
+            className="w-full mt-3 font-mono text-[10px] font-bold tracking-[0.15em] uppercase text-gray-500 hover:text-red-500 underline-offset-4 hover:underline transition-colors cursor-pointer"
+          >
+            Cancel request
+          </button>
+        </>
       ) : (
         <button
           onClick={onRequest}
@@ -112,7 +122,7 @@ function MembersOnlyBox() {
         Members Only
       </p>
       <p className="text-gray-300 text-xs leading-relaxed mb-3">
-        Join Apex to book 1-on-1 sessions with our certified coaches — from <span className="text-white font-semibold">$85/hr.</span>
+        Join Bruns Fitness to book 1-on-1 sessions with our certified coaches — from <span className="text-white font-semibold">$85/hr.</span>
       </p>
       <p className="text-gray-600 text-[10px] uppercase tracking-wider">
         Included in PERFORM &amp; BLACK plans
@@ -151,9 +161,14 @@ interface TrainersSectionProps {
   /** Member view: trainer ids already requested. Omit for the guest view. */
   requestedIds?: string[]
   onRequestSession?: (trainerId: string) => void
+  onCancelSession?: (trainerId: string) => void
 }
 
-export default function TrainersSection({ requestedIds, onRequestSession }: TrainersSectionProps = {}) {
+export default function TrainersSection({
+  requestedIds,
+  onRequestSession,
+  onCancelSession,
+}: TrainersSectionProps = {}) {
   const [selectedId, setSelectedId] = useState<string | null>(ALL_TRAINERS[0].id)
 
   const selectedTrainer = ALL_TRAINERS.find((t) => t.id === selectedId) ?? null
@@ -177,7 +192,7 @@ export default function TrainersSection({ requestedIds, onRequestSession }: Trai
             The coaches<br />behind the results.
           </h1>
           <p className="text-gray-400 text-sm leading-relaxed">
-            Every Apex coach is{' '}
+            Every Bruns Fitness coach is{' '}
             <span className="text-red-500 font-semibold">certified</span>, experienced, and
             obsessively focused on one{' '}
             <span className="text-white font-semibold">thing</span>: making you better. Select a
@@ -205,6 +220,7 @@ export default function TrainersSection({ requestedIds, onRequestSession }: Trai
                 trainer={selectedTrainer}
                 requested={requestedIds.includes(selectedTrainer.id)}
                 onRequest={() => onRequestSession?.(selectedTrainer.id)}
+                onCancel={() => onCancelSession?.(selectedTrainer.id)}
               />
             ) : (
               <MembersOnlyBox />

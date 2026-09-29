@@ -1,5 +1,5 @@
 import Hero from '@/components/guest/Hero'
-import ApexMethod from '@/components/guest/ApexMethod'
+import BrunsMethod from '@/components/guest/BrunsMethod'
 import Schedule from '@/components/guest/Schedule'
 import MemberStories from '@/components/guest/MemberStories'
 import CtaBanner from '@/components/guest/CtaBanner'
@@ -36,7 +36,7 @@ function GuestHome() {
   return (
     <>
       <Hero />
-      <ApexMethod />
+      <BrunsMethod />
       <Schedule />
       <MemberStories />
       <CtaBanner />

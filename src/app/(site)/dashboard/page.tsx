@@ -5,15 +5,17 @@ import { getBookings } from '@/lib/server/getBookings'
 import { resolveBookings } from '@/lib/bookings'
 import StatCards from '@/components/ui/StatCards'
 import { BookingList } from '@/components/member/UpcomingBookings'
-import TrainerToday from '@/components/trainer/TrainerToday'
+import TrainerDashboard from '@/components/trainer/TrainerDashboard'
 import { getRole } from '@/lib/server/getRole'
+import { getSessionRequests } from '@/lib/server/getSessionRequests'
 
 export default async function DashboardPage() {
   // Guard in the page, not a layout: layouts render in parallel and don't protect pages.
   const role = await getRole()
   if (role === 'Guest') redirect('/')
-  // Placeholder until the trainer dashboard has its own design.
-  if (role === 'Trainer') return <TrainerToday showDashboardLink={false} />
+  if (role === 'Trainer') {
+    return <TrainerDashboard sessionRequests={await getSessionRequests()} now={Date.now()} />
+  }
 
   const plan = PLANS.find((p) => p.id === MEMBER.planId)
   const bookings = resolveBookings(await getBookings())
@@ -29,7 +31,7 @@ export default async function DashboardPage() {
               Member Dashboard
             </span>
           </div>
-          <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-none">My Apex</h1>
+          <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-none">My Bruns</h1>
         </div>
 
         {/* Stats */}

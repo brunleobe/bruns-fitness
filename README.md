@@ -19,12 +19,14 @@ There is no real login yet. The **Guest / Member / Trainer** switcher in the Nav
 | Page         | Guest                | Member                         | Trainer                  |
 | ------------ | -------------------- | ------------------------------ | ------------------------ |
 | `/`          | Marketing home       | Hero, week stats, bookings     | Hero, today's sessions   |
-| `/classes`   | JOIN → plan modal    | BOOK → saved to cookie         | "Managing", no filters   |
-| `/trainers`  | "Members only" box   | Request a 1-on-1 session       | Same as guest            |
-| `/pricing`   | Plans                | Plans                          | Redirects to `/`         |
-| `/dashboard` | Redirects to `/`     | My Apex (stats, bookings, billing) | Trainer portal (placeholder) |
+| `/classes`   | JOIN → plan modal    | BOOK → pick a session (next 7 days); waitlist when full | "Managing", no filters |
+| `/trainers`  | "Members only" box   | Request / cancel a 1-on-1 session | Same as guest         |
+| `/pricing`   | Plans                | Plans, with "Current Plan" on theirs | Redirects to `/`       |
+| `/dashboard` | Redirects to `/`     | My Bruns (stats, bookings, billing) | Coach dashboard (schedule, requests, earnings) |
 
-Demo state lives in cookies: `bf-role`, `bf-bookings-v2`, `bf-session-requests-v1`. To wipe everyone's demo data, bump the version suffix in `src/lib/bookings.ts` or `src/lib/sessionRequests.ts`.
+Bookings are per session (class + date + time). Booking rules (spots per session, waitlist, cancel, past sessions dropping off) live in `src/lib/bookings.ts` and are shared by the server actions and the instant UI updates, so they always agree. All dates use gym time (Africa/Lagos). Each class's `spotsLeft` in `classesData.ts` is the starting count per session; Powerlifting starts at 0 to demo the waitlist. The Trainer role logs in as Marcus Webb (`DEMO_TRAINER_ID`).
+
+Demo state lives in cookies: `bf-role`, `bf-bookings-v3`, `bf-session-requests-v1`. To wipe everyone's demo data, bump the version suffix in `src/lib/bookings.ts` or `src/lib/sessionRequests.ts`.
 
 ## Project structure
 
@@ -41,7 +43,7 @@ src/
 ├── components/
 │   ├── layout/                 Navbar, Footer
 │   ├── ui/                     Generic building blocks (RoleHero, StatCards)
-│   ├── guest/                  Guest home sections (Hero, ApexMethod, Schedule, ...)
+│   ├── guest/                  Guest home sections (Hero, BrunsMethod, Schedule, ...)
 │   ├── member/                 Member-only sections
 │   ├── trainer/                Trainer-only sections
 │   ├── classes/                ClassesSection (guest/member/trainer views)

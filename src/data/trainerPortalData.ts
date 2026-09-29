@@ -24,3 +24,25 @@ export const TODAY_SESSIONS: TrainerSession[] = [
 
 export const ACTIVE_CLIENTS = 28
 export const MONTH_REVENUE = 4280
+
+// The trainer the demo "Trainer" role logs in as.
+export const DEMO_TRAINER_ID = 'trainer-marcus-webb'
+
+export interface Payout {
+  id: string
+  date: string
+  amount: number
+  status: 'PAID' | 'PENDING'
+}
+
+export const PAYOUT_HISTORY: Payout[] = [
+  { id: 'po-3', date: 'Sep 1, 2026', amount: 3960, status: 'PAID' },
+  { id: 'po-2', date: 'Aug 1, 2026', amount: 4115, status: 'PAID' },
+  { id: 'po-1', date: 'Jul 1, 2026', amount: 3720, status: 'PAID' },
+]
+
+export const TRAINER_STATS = [
+  { label: 'Sessions today', value: String(TODAY_SESSIONS.length) },
+  { label: 'Active clients', value: String(ACTIVE_CLIENTS) },
+  { label: 'Month revenue', value: `$${MONTH_REVENUE.toLocaleString('en-US')}` },
+]

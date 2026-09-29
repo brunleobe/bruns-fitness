@@ -7,7 +7,7 @@ import type { PricingPlan } from '@/data/pricingData'
 // Plan card
 // ─────────────────────────────────────────────
 
-function PlanCard({ plan, onBook }: { plan: PricingPlan; onBook: () => void }) {
+function PlanCard({ plan, onBook, isCurrent }: { plan: PricingPlan; onBook: () => void; isCurrent: boolean }) {
   return (
     <div
       className={`relative flex flex-col border transition-all duration-300 overflow-hidden ${
@@ -56,16 +56,22 @@ function PlanCard({ plan, onBook }: { plan: PricingPlan; onBook: () => void }) {
         </ul>
 
         {/* CTA */}
-        <button
-          onClick={onBook}
-          className={`w-full py-3.5 text-xs font-display font-black tracking-[0.2em] uppercase transition-all duration-200 cursor-pointer ${
-            plan.isPopular
-              ? 'bg-red-600 hover:bg-red-700 text-white'
-              : 'border border-white/30 hover:border-white text-white hover:bg-white/5'
-          }`}
-        >
-          Get Started
-        </button>
+        {isCurrent ? (
+          <div className="w-full py-3.5 text-center text-xs font-display font-black tracking-[0.2em] uppercase border border-green-500/40 bg-green-500/5 text-green-500">
+            ✓ Current Plan
+          </div>
+        ) : (
+          <button
+            onClick={onBook}
+            className={`w-full py-3.5 text-xs font-display font-black tracking-[0.2em] uppercase transition-all duration-200 cursor-pointer ${
+              plan.isPopular
+                ? 'bg-red-600 hover:bg-red-700 text-white'
+                : 'border border-white/30 hover:border-white text-white hover:bg-white/5'
+            }`}
+          >
+            Get Started
+          </button>
+        )}
       </div>
     </div>
   )
@@ -77,9 +83,11 @@ function PlanCard({ plan, onBook }: { plan: PricingPlan; onBook: () => void }) {
 
 interface PricingSectionProps {
   onBook: () => void
+  /** Member view: the plan the member is on. Omit for guests. */
+  currentPlanId?: string
 }
 
-export default function PricingSection({ onBook }: PricingSectionProps) {
+export default function PricingSection({ onBook, currentPlanId }: PricingSectionProps) {
   return (
     <section className="bg-black text-white py-16 sm:py-24">
       <div className="max-w-7xl mx-auto px-6">
@@ -103,7 +111,7 @@ export default function PricingSection({ onBook }: PricingSectionProps) {
         {/* Plans grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
           {PLANS.map((plan) => (
-            <PlanCard key={plan.id} plan={plan} onBook={onBook} />
+            <PlanCard key={plan.id} plan={plan} onBook={onBook} isCurrent={plan.id === currentPlanId} />
           ))}
         </div>
 
@@ -118,7 +126,7 @@ export default function PricingSection({ onBook }: PricingSectionProps) {
               30 days or your money back.
             </h2>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Try Apex for 30 days. If you don&apos;t feel the difference — in energy, in strength,
+              Try Bruns Fitness for 30 days. If you don&apos;t feel the difference — in energy, in strength,
               in how you show up — we&apos;ll refund you in full. No forms. No runaround. That&apos;s
               our commitment to you.
             </p>
@@ -164,7 +172,7 @@ export default function PricingSection({ onBook }: PricingSectionProps) {
               },
               {
                 q: 'Are group classes included?',
-                a: 'PERFORM and BLACK memberships include unlimited group classes, bookable through the Apex app up to 7 days in advance.',
+                a: 'PERFORM and BLACK memberships include unlimited group classes, bookable through the Bruns Fitness app up to 7 days in advance.',
               },
               {
                 q: 'Can I bring a guest?',
@@ -172,7 +180,7 @@ export default function PricingSection({ onBook }: PricingSectionProps) {
               },
               {
                 q: 'Do you offer corporate plans?',
-                a: 'Yes — contact hello@apexgym.com for group rates and enterprise agreements.',
+                a: 'Yes — contact hello@brunsfitness.com for group rates and enterprise agreements.',
               },
             ].map(({ q, a }) => (
               <div key={q} className="border border-white/8 bg-[#0a0a0a] p-6 hover:border-white/15 transition-colors duration-200">
