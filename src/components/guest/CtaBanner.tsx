@@ -21,7 +21,7 @@ export default function CtaBanner() {
           <a
             id="cta-join-bruns-btn"
             href="#join"
-            className="inline-block bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-display font-black tracking-[0.2em] uppercase px-10 py-5 transition-all duration-200 hover:scale-[1.02] active:scale-100 shadow-lg shadow-red-600/20"
+            className="inline-block bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-display font-black tracking-[0.12em] sm:tracking-[0.2em] uppercase whitespace-nowrap px-6 sm:px-10 py-5 transition-all duration-200 hover:scale-[1.02] active:scale-100 shadow-lg shadow-red-600/20"
           >
             JOIN BRUNS FITNESS — FROM $29/MO
           </a>

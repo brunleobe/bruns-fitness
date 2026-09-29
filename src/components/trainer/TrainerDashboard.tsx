@@ -24,7 +24,7 @@ export default function TrainerDashboard({ sessionRequests, now }: TrainerDashbo
   const hasRequest = sessionRequests.includes(trainer.id)
 
   return (
-    <section className="bg-black text-white py-16 sm:py-24">
+    <section className="bg-black text-white pt-28 pb-16 sm:pt-32 sm:pb-24">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="space-y-4 mb-12">
@@ -129,10 +129,10 @@ export default function TrainerDashboard({ sessionRequests, now }: TrainerDashbo
                   {PAYOUT_HISTORY.map((payout) => (
                     <li
                       key={payout.id}
-                      className="grid grid-cols-3 items-center py-4 border-b border-white/5 text-sm"
+                      className="grid grid-cols-[1fr_auto_3.5rem] gap-4 items-center py-4 border-b border-white/5 text-sm"
                     >
-                      <span className="text-gray-500 text-xs font-mono tracking-wider">{payout.date}</span>
-                      <span className="text-white text-center">
+                      <span className="text-gray-500 text-xs font-mono tracking-wider whitespace-nowrap">{payout.date}</span>
+                      <span className="text-white text-right">
                         ${payout.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                       </span>
                       <span

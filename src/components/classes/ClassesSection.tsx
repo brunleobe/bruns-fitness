@@ -228,7 +228,7 @@ export default function ClassesSection({
       : ALL_CLASSES.filter((c) => c.level === activeLevel)
 
   return (
-    <section className="bg-black text-white py-16 sm:py-24">
+    <section className="bg-black text-white pt-28 pb-16 sm:pt-32 sm:pb-24">
       <div className="max-w-7xl mx-auto px-6">
         {/* ── Header ── */}
         <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 mb-10">
@@ -259,14 +259,14 @@ export default function ClassesSection({
           )}
         </div>
 
-        {/* ── Level filter tabs (trainers see every class) ── */}
+        {/* ── Level filter tabs (trainers see every class); one swipeable row on phones ── */}
         {view !== 'trainer' && (
-          <div className="flex flex-wrap gap-2 mb-10">
+          <div className="flex gap-2 mb-10 -mx-6 px-6 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:px-0 sm:flex-wrap sm:overflow-visible">
             {LEVEL_FILTERS.map((level) => (
               <button
                 key={level}
                 onClick={() => setActiveLevel(level)}
-                className={`px-5 py-2 text-xs font-mono font-bold tracking-widest uppercase transition-all duration-200 cursor-pointer ${
+                className={`shrink-0 whitespace-nowrap px-5 py-2 text-xs font-mono font-bold tracking-widest uppercase transition-all duration-200 cursor-pointer ${
                   activeLevel === level
                     ? 'bg-red-600 text-white shadow-lg shadow-red-950/40'
                     : 'border border-white/20 text-gray-400 hover:text-white hover:border-white/40'

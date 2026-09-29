@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { ALL_TRAINERS } from '@/data/trainersData'
 import type { Trainer } from '@/data/trainersData'
 
@@ -18,9 +18,11 @@ function TrainerCard({
   onClick: () => void
 }) {
   return (
-    <div
+    <button
+      type="button"
       onClick={onClick}
-      className={`group flex flex-col bg-[#0a0a0a] border transition-all duration-300 overflow-hidden cursor-pointer ${
+      aria-pressed={isSelected}
+      className={`group flex flex-col text-left bg-[#0a0a0a] border transition-all duration-300 overflow-hidden cursor-pointer ${
         isSelected
           ? 'border-red-600'
           : 'border-white/8 hover:border-white/20'
@@ -38,27 +40,27 @@ function TrainerCard({
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/10 to-transparent" />
 
         {/* Name & exp overlaid at bottom of image */}
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <p className="text-white text-base font-black leading-tight drop-shadow">{trainer.name}</p>
+        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+          <p className="text-white text-sm sm:text-base font-black leading-tight drop-shadow">{trainer.name}</p>
           <p className="text-red-500 text-xs font-bold mt-0.5">{trainer.yearsExp} yrs exp.</p>
         </div>
       </div>
 
       {/* Card footer */}
-      <div className="px-4 pt-3 pb-4 flex flex-col gap-2.5">
+      <div className="px-3 sm:px-4 pt-3 pb-4 flex flex-col gap-2.5">
         <p className="text-gray-300 text-xs leading-snug">{trainer.role}</p>
         <div className="flex flex-wrap gap-1.5">
           {trainer.certifications.map((cert) => (
             <span
               key={cert}
-              className="bg-white/5 border border-white/10 text-gray-400 font-mono text-[10px] font-bold tracking-wider px-2.5 py-1 uppercase"
+              className="bg-white/5 border border-white/10 text-gray-400 font-mono text-[9px] sm:text-[10px] font-bold tracking-wider px-2 sm:px-2.5 py-1 uppercase"
             >
               {cert}
             </span>
           ))}
         </div>
       </div>
-    </div>
+    </button>
   )
 }
 
@@ -133,7 +135,7 @@ function MembersOnlyBox() {
 
 function TrainerDetail({ trainer, children }: { trainer: Trainer; children: React.ReactNode }) {
   return (
-    <div className="mt-4 border border-white/10 bg-[#0a0a0a] p-8 sm:p-10 grid grid-cols-1 md:grid-cols-3 gap-8 animate-[fadeIn_0.25s_ease]">
+    <div className="mt-4 border border-white/10 bg-[#0a0a0a] p-5 sm:p-8 lg:p-10 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 animate-[fadeIn_0.25s_ease]">
       {/* Left — main info */}
       <div className="md:col-span-2">
         <p className="text-red-500 text-[10px] font-mono font-black tracking-[0.25em] uppercase mb-3">
@@ -170,15 +172,21 @@ export default function TrainersSection({
   onCancelSession,
 }: TrainersSectionProps = {}) {
   const [selectedId, setSelectedId] = useState<string | null>(ALL_TRAINERS[0].id)
+  const detailRef = useRef<HTMLDivElement>(null)
 
   const selectedTrainer = ALL_TRAINERS.find((t) => t.id === selectedId) ?? null
 
   function handleCardClick(id: string) {
-    setSelectedId((prev) => (prev === id ? null : id))
+    const opening = selectedId !== id
+    setSelectedId(opening ? id : null)
+    // On stacked layouts the profile sits below the grid — bring it into view.
+    if (opening && window.matchMedia('(max-width: 1023px)').matches) {
+      requestAnimationFrame(() => detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+    }
   }
 
   return (
-    <section className="bg-black text-white py-16 sm:py-24">
+    <section className="bg-black text-white pt-28 pb-16 sm:pt-32 sm:pb-24">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="mb-12 max-w-xl">
@@ -200,8 +208,8 @@ export default function TrainersSection({
           </p>
         </div>
 
-        {/* 4-column grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* 2 columns on phones/tablets, 4 on desktop */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {ALL_TRAINERS.map((trainer) => (
             <TrainerCard
               key={trainer.id}
@@ -213,6 +221,7 @@ export default function TrainersSection({
         </div>
 
         {/* Detail panel */}
+        <div ref={detailRef} className="scroll-mt-20" />
         {selectedTrainer && (
           <TrainerDetail trainer={selectedTrainer}>
             {requestedIds ? (

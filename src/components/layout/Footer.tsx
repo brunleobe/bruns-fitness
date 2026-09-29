@@ -24,9 +24,9 @@ export default function Footer() {
     <footer className="bg-black text-white border-t border-white/5 relative z-10 pt-16 sm:pt-20 pb-12">
       <div className="max-w-7xl mx-auto px-6">
         {/* Main 4 Columns Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-16">
+        <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-6 gap-y-10 lg:gap-8 pb-16">
           {/* Column 1: Brand & Location */}
-          <div className="lg:col-span-4 space-y-6">
+          <div className="col-span-2 lg:col-span-4 space-y-6">
             <a href="#" className="inline-flex items-center gap-1.5 focus:outline-hidden">
               <span className="font-display text-white font-black text-xl tracking-tight uppercase">BRUNS</span>
               <span className="font-display text-red-600 font-black text-xl tracking-tight uppercase">FITNESS</span>
@@ -111,16 +111,16 @@ export default function Footer() {
             © 2026 BRUNS FITNESS. ALL RIGHTS RESERVED.
           </div>
 
-          <div className="flex items-center gap-3">
-            <a href="#privacy" className="hover:text-gray-400 transition-colors duration-200">
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+            <a href="#privacy" className="hover:text-gray-400 transition-colors duration-200 whitespace-nowrap">
               PRIVACY POLICY
             </a>
             <span className="text-gray-700">·</span>
-            <a href="#terms" className="hover:text-gray-400 transition-colors duration-200">
+            <a href="#terms" className="hover:text-gray-400 transition-colors duration-200 whitespace-nowrap">
               TERMS OF SERVICE
             </a>
             <span className="text-gray-700">·</span>
-            <a href="#accessibility" className="hover:text-gray-400 transition-colors duration-200">
+            <a href="#accessibility" className="hover:text-gray-400 transition-colors duration-200 whitespace-nowrap">
               ACCESSIBILITY
             </a>
           </div>

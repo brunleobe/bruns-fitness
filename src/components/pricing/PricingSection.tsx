@@ -89,7 +89,7 @@ interface PricingSectionProps {
 
 export default function PricingSection({ onBook, currentPlanId }: PricingSectionProps) {
   return (
-    <section className="bg-black text-white py-16 sm:py-24">
+    <section className="bg-black text-white pt-28 pb-16 sm:pt-32 sm:pb-24">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="mb-14 max-w-xl">
